@@ -1,12 +1,34 @@
-Before you begin
-When scripts are set to user context and the end user has administrator rights, by default, the PowerShell script runs under the administrator privilege.
+# PowerShell Script Execution via Intune
 
-End users aren't required to sign in to the device to execute PowerShell scripts.
+## 🔧 Key Behavior Summary
 
-The Intune management extension checks after every reboot for any new scripts or changes. After you assign the policy to the Microsoft Entra groups, the PowerShell script runs, and the run results are reported. Once the script executes, it doesn't execute again unless there's a change in the script or policy. If the script fails, the Intune management extension retries the script three times for the next three consecutive Intune management extension check-ins.
+### Administrator Context
+- Scripts set to **user context** will run with **administrator privileges** if the end user has administrative rights.
 
-A PowerShell script assigned to the device will run for every new user that signs in, except on multi-session SKUs where user check-in is disabled.
+### User Sign-In Not Required
+- **Users do not need to be signed in** for PowerShell scripts to execute.
 
-PowerShell scripts are executed before Win32 apps run. In other words, PowerShell scripts execute first. Then, Win32 apps execute.
+### Intune Management Extension Check-In
+- Intune checks for new or changed scripts **after every reboot**.
+- If a script **fails**, Intune retries it **up to 3 times** during the next **3 consecutive check-ins**.
 
-PowerShell scripts time out after 30 minutes.
+### Script Execution Frequency
+- Scripts run **once** unless:
+  - The **script or its policy is updated**.
+  - The **initial execution fails**.
+
+### Device Assignment Behavior
+- When assigned to a **device**, the script:
+  - Runs **once per new user** signing in.
+  - Does **not run per-user** on **multi-session SKUs** (user check-in is disabled).
+
+### Execution Order
+- PowerShell scripts run **before** any assigned **Win32 apps**.
+
+### Execution Timeout
+- Each script has a **30-minute** execution timeout.
+
+---
+
+**Note:** These behaviors are subject to change based on Microsoft Intune service updates.
+
