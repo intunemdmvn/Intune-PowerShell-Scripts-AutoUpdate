@@ -36,7 +36,7 @@ foreach ($regPath in $regPaths) {
     }
 }
 
-# Download the latest installer then starting update process if:
+# Download the latest installer then starting install or update the app if:
 # - The installed version is older than the latest version.
 # - The app is not installed ( $installedVersion = $null ).
 
@@ -51,7 +51,7 @@ if ($installedVersion -lt $latestVersion) {
         Start-Sleep -Seconds 2
     }
 
-    # Start update process.
+    # Start the install or update process.
     Start-Process -FilePath "$env:TEMP\winrar-latest.exe" -ArgumentList '-s1' -Wait
 
     # Cleanup.
