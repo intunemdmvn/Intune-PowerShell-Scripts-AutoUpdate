@@ -1,6 +1,6 @@
 
 # GitHub API URL for the app manifest.
-$apiUrl = "https://api.github.com/repos/microsoft/winget-pkgs/contents/manifests/r/RARLab/WinRAR"
+$apiUrl = "https://api.github.com/repos/microsoft/winget-pkgs/contents/manifests/v/VideoLAN/VLC"
 
 # Fetch version folders then filter only version folders.
 $versions = Invoke-RestMethod -Uri $apiUrl -Headers @{ 'User-Agent' = 'PowerShell' }
@@ -30,7 +30,7 @@ foreach ($regPath in $regPaths) {
     $apps = Get-ChildItem $regPath -ErrorAction SilentlyContinue
     foreach ($app in $apps) {
         $props = Get-ItemProperty $app.PSPath
-        if ($props.DisplayName -like "*WinRAR*") {
+        if ($props.DisplayName -like "*vlc*") {
             $installedVersion = $($props.DisplayVersion)
         }
     }
@@ -42,17 +42,17 @@ foreach ($regPath in $regPaths) {
 
 if ($installedVersion -lt $latestVersion) {
     $webClient = [System.Net.WebClient]::new()
-    $webClient.DownloadFile($installerUrl, "$env:TEMP\winrar-latest.exe")
+    $webClient.DownloadFile($installerUrl, "$env:TEMP\vlc-latest.exe")
 
     # If the app is running, stop it before processing the update.
-    $process = Get-Process -ProcessName 'WinRAR' -ErrorAction SilentlyContinue
+    $process = Get-Process -ProcessName 'vlc' -ErrorAction SilentlyContinue
     if ($process) {
         $process | Stop-Process -Force -ErrorAction SilentlyContinue
     }
 
     # Start update process.
-    Start-Process -FilePath "$env:TEMP\winrar-latest.exe" -ArgumentList '-s1' -Wait
+    Start-Process -FilePath "$env:TEMP\vlc-latest.exe" -ArgumentList '/S' -Wait
 
     # Cleanup.
-    Remove-Item -Path "$env:TEMP\winrar-latest.exe" -Force -ErrorAction SilentlyContinue
+    Remove-Item -Path "$env:TEMP\vlc-latest.exe" -Force -ErrorAction SilentlyContinue
 }
