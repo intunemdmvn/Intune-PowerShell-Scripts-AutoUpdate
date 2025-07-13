@@ -1,16 +1,16 @@
 
-# GitHub API URL for the app manifest
+# GitHub API URL for the app manifest.
 $apiUrl = "https://api.github.com/repos/microsoft/winget-pkgs/contents/manifests/r/RARLab/WinRAR"
 
-# Fetch version folders then filter only version folders
+# Fetch version folders then filter only version folders.
 $versions = Invoke-RestMethod -Uri $apiUrl -Headers @{ 'User-Agent' = 'PowerShell' }
 $versionFolders = $versions | Where-Object { $_.type -eq "dir" }
 
-# Extract and sort version numbers to get the latest version
+# Extract and sort version numbers to get the latest version.
 $sortedVersions = $versionFolders | ForEach-Object { $_.name } | Sort-Object {[version]$_} -Descending
 $latestVersion = $sortedVersions[0]
 
-# Get contents of the latest version folder to find the .installer.yaml file
+# Get contents of the latest version folder to find the .installer.yaml file.
 $latestApiUrl = "$apiUrl/$latestVersion"
 $latestFiles = Invoke-RestMethod -Uri $latestApiUrl -Headers @{ 'User-Agent' = 'PowerShell' }
 $installerFile = $latestFiles | Where-Object { $_.name -like "*.installer.yaml" }
@@ -20,7 +20,7 @@ $yamlUrl = $installerFile.download_url
 $yamlContent = Invoke-RestMethod -Uri $yamlUrl -Headers @{ 'User-Agent' = 'PowerShell' }
 $installerUrl = ($yamlContent -join "`n") -match "InstallerUrl:\s+(http.*)" | ForEach-Object { $Matches[1] }
 
-# Check the installed version number of the app and store it to the $installedVersion variable
+# Check the installed version number of the app and store it to the $installedVersion variable.
 $regPaths = @(
     "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
     "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall"
@@ -39,6 +39,7 @@ foreach ($regPath in $regPaths) {
 # Download the latest installer then starting update process if:
 # - The installed version is older than the latest version.
 # - The app is not installed ( $installedVersion = $null ).
+
 if ($installedVersion -lt $latestVersion) {
     $webClient = [System.Net.WebClient]::new()
     $webClient.DownloadFile($installerUrl, "$env:TEMP\winrar-latest.exe")
