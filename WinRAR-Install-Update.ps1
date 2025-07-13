@@ -47,12 +47,12 @@ if ($installedVersion -lt $latestVersion) {
     # If the app is running, stop it before processing the update.
     $process = Get-Process -ProcessName 'WinRAR' -ErrorAction SilentlyContinue
     if ($process) {
-        Stop-Process -ProcessName 'WinRAR' -Force
+        $process | Stop-Process -Force -ErrorAction SilentlyContinue
     }
 
     # Start update process.
     Start-Process -FilePath "$env:TEMP\winrar-latest.exe" -ArgumentList '-s1' -Wait
 
-    # Cleanup
+    # Cleanup.
     Remove-Item -Path "$env:TEMP\winrar-latest.exe" -Force -ErrorAction SilentlyContinue
 }
