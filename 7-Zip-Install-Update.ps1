@@ -48,6 +48,7 @@ if ($installedVersion -lt $latestVersion) {
     $process = Get-Process -ProcessName 'WinRAR' -ErrorAction SilentlyContinue
     if ($process) {
         $process | Stop-Process -Force -ErrorAction SilentlyContinue
+        Start-Sleep -Seconds 2
     }
 
     # Start update process.
