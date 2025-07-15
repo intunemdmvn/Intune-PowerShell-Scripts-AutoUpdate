@@ -1,9 +1,6 @@
-# PowerShell Script Execution via Intune
+# PowerShell Script Auto Update Apps via Intune
 
-## 🔧 Key Behavior Summary
-
-### Administrator Context
-- Scripts set to **user context** will run with **administrator privileges** if the end user has administrative rights.
+The scripts are designed to automatically update applications on a Windows machine using a daily scheduled task. It uses GitHub APIs to check the latest version, compares it with the installed version, and installs the update silently if needed.
 
 ### User Sign-In Not Required
 - **Users do not need to be signed in** for PowerShell scripts to execute.
@@ -16,11 +13,6 @@
 - Scripts run **once** unless:
   - The **script or its policy is updated**.
   - The **initial execution fails**.
-
-### Device Assignment Behavior
-- When assigned to a **device**, the script:
-  - Runs **once per new user** signing in.
-  - Does **not run per-user** on **multi-session SKUs** (user check-in is disabled).
 
 ### Execution Order
 - PowerShell scripts run **before** any assigned **Win32 apps**.
