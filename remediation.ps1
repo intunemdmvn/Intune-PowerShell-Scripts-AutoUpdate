@@ -1,5 +1,6 @@
+
 # Get the latest version from the GitHub API URL for the app manifest.
-    $apiUrl = "https://api.github.com/repos/microsoft/winget-pkgs/contents/manifests/m/Mozilla/Firefox"
+    $apiUrl = "https://api.github.com/repos/microsoft/winget-pkgs/contents/manifests/7/7zip/7zip"
     $versions = Invoke-RestMethod -Uri $apiUrl -Headers @{ 'User-Agent' = 'PowerShell' }
     $versionFolders = $versions | Where-Object { $_.type -eq "dir" }
     $sortedVersions = $versionFolders | ForEach-Object { $_.name } | Sort-Object {[version]$_} -Descending -ErrorAction SilentlyContinue
@@ -19,17 +20,17 @@
 
 # Download the latest installer to the temp folder.
     $webClient = [System.Net.WebClient]::new()
-    $webClient.DownloadFile($installerUrl, "$env:TEMP\firefox-latest.exe")
+    $webClient.DownloadFile($installerUrl, "$env:TEMP\7-zip-latest.exe")
 
 # If the app is running, stop it before processing the update.
-    $process = Get-Process -ProcessName '*firefox*' -ErrorAction SilentlyContinue
+    $process = Get-Process -ProcessName *7z* -ErrorAction SilentlyContinue
     if ($process) {
         $process | Stop-Process -Force
         Start-Sleep -Seconds 3
     }
 
 # Start the update (install) process.
-    Start-Process -FilePath "$env:TEMP\firefox-latest.exe" -ArgumentList "/S" -Wait
+    Start-Process -FilePath "$env:TEMP\7-zip-latest.exe" -ArgumentList "/S" -Wait
 
 # Cleanup resources.
-    Remove-Item -Path "$env:TEMP\firefox-latest.exe" -Force
+    Remove-Item -Path "$env:TEMP\7-zip-latest.exe" -Force

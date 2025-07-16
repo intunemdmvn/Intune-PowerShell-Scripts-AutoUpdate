@@ -1,6 +1,6 @@
 
 # Get the latest version from the GitHub API URL for the app manifest.
-    $apiUrl = "https://api.github.com/repos/microsoft/winget-pkgs/contents/manifests/m/Mozilla/Firefox"
+    $apiUrl = "https://api.github.com/repos/microsoft/winget-pkgs/contents/manifests/7/7zip/7zip"
     $versions = Invoke-RestMethod -Uri $apiUrl -Headers @{ 'User-Agent' = 'PowerShell' }
     $versionFolders = $versions | Where-Object { $_.type -eq "dir" }
     $sortedVersions = $versionFolders | ForEach-Object { $_.name } | Sort-Object {[version]$_} -Descending -ErrorAction SilentlyContinue
@@ -17,7 +17,7 @@
             $apps = Get-ChildItem $regPath -ErrorAction SilentlyContinue
             foreach ($app in $apps) {
                 $props = Get-ItemProperty $app.PSPath
-                if ($props.DisplayName -like "*firefox*") {
+                if ($props.DisplayName -like "*7-zip*") {
                     $installedVersion = $($props.DisplayVersion)
                 }
             }

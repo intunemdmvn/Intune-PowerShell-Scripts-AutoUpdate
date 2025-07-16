@@ -64,24 +64,24 @@ $scriptBlock = {
 }
 
 # Create the C:\IntuneScripts folder if it not exist.
-if (-Not (Test-Path -Path 'C:\IntuneScripts')) {
-    New-Item -Path 'C:\IntuneScripts' -ItemType Directory
-}
+    if (-Not (Test-Path -Path 'C:\IntuneScripts')) {
+        New-Item -Path 'C:\IntuneScripts' -ItemType Directory
+    }
 
 # Create a PowerShell from the $scriptBlock in the C:\IntuneScripts folder.
-$scriptBlock.ToString() | Out-File -FilePath 'C:\IntuneScripts\firefox-update.ps1' -Encoding UTF8 -Force
+    $scriptBlock.ToString() | Out-File -FilePath 'C:\IntuneScripts\firefox-update.ps1' -Encoding UTF8 -Force
 
 # Create a schedule task. The task will execute the PowerShell script "C:\IntuneScripts\firefox-update.ps1" every day at 12AM.
-$trigger = New-ScheduledTaskTrigger -Daily -At 12AM -RandomDelay (New-TimeSpan -Minutes 10)
-$action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument '-NoProfile -ExecutionPolicy ByPass -WindowStyle Hidden -File "C:\IntuneScripts\firefox-update.ps1"'
-$settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -RestartCount 3
-$principal = New-ScheduledTaskPrincipal -UserID "NT AUTHORITY\SYSTEM" -LogonType ServiceAccount -RunLevel Highest
-$splat = @{
-    TaskName = 'Firefox Update'
-    Trigger = $trigger
-    Action = $action
-    Settings = $settings
-    Principal = $principal
-    TaskPath = '\IntuneTasks\'
-}
-Register-ScheduledTask @splat
+    $trigger = New-ScheduledTaskTrigger -Daily -At 12AM -RandomDelay (New-TimeSpan -Minutes 10)
+    $action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument '-NoProfile -ExecutionPolicy ByPass -WindowStyle Hidden -File "C:\IntuneScripts\firefox-update.ps1"'
+    $settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -RestartCount 3
+    $principal = New-ScheduledTaskPrincipal -UserID "NT AUTHORITY\SYSTEM" -LogonType ServiceAccount -RunLevel Highest
+    $splat = @{
+        TaskName = 'Firefox Update'
+        Trigger = $trigger
+        Action = $action
+        Settings = $settings
+        Principal = $principal
+        TaskPath = '\IntuneTasks\'
+    }
+    Register-ScheduledTask @splat
