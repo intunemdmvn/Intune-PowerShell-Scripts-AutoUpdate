@@ -1,12 +1,8 @@
 
-# GitHub API URL for the app manifest.
+# Get the latest version from the GitHub API URL for the app manifest.
     $apiUrl = "https://api.github.com/repos/microsoft/winget-pkgs/contents/manifests/7/7zip/7zip"
-
-# Fetch version folders then filter only version folders.
     $versions = Invoke-RestMethod -Uri $apiUrl -Headers @{ 'User-Agent' = 'PowerShell' }
     $versionFolders = $versions | Where-Object { $_.type -eq "dir" }
-
-# Extract and sort version numbers then get the latest version.
     $sortedVersions = $versionFolders | ForEach-Object { $_.name } | Sort-Object {[version]$_} -Descending -ErrorAction SilentlyContinue
     $latestVersion = $sortedVersions[0]
 
