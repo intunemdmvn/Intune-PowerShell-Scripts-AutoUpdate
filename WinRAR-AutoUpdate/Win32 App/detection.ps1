@@ -1,4 +1,4 @@
-if (Get-ScheduledTask -TaskName ' Update') {
+if (Get-ScheduledTask -TaskName 'WinRAR Update') {
     Write-Host "Detected."
     exit 0
 } else {

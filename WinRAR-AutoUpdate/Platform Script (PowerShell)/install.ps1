@@ -19,10 +19,10 @@ $scriptBlock = {
     # Download and parse YAML content to get the Url of the latest installer file.
     $yamlUrl = $installerFile.download_url
     $yamlContent = Invoke-RestMethod -Uri $yamlUrl -Headers @{ 'User-Agent' = 'PowerShell' }
-    $null = ($yamlContent -join "`n") -match "InstallerUrl:\s+(http.*)"
-    $installerUrl = $Matches[1]
-
-
+    $yamlString = $yamlContent -join "`n"
+    $installerUrls = [regex]::Matches($yamlString, "InstallerUrl:\s+(http[^\s]+)") | ForEach-Object { $_.Groups[1].Value }
+    $installerUrl = $installerUrls[0]
+    
     # Check the installed version number of the app and store it to the $installedVersion variable.
     $regPaths = @(
         "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
@@ -64,24 +64,24 @@ $scriptBlock = {
 }
 
 # Create the C:\IntuneScripts folder if it not exist.
-if (-Not (Test-Path -Path 'C:\IntuneScripts')) {
-    New-Item -Path 'C:\IntuneScripts' -ItemType Directory
-}
+    if (-Not (Test-Path -Path 'C:\IntuneScripts')) {
+        New-Item -Path 'C:\IntuneScripts' -ItemType Directory
+    }
 
 # Create a PowerShell from the $scriptBlock in the C:\IntuneScripts folder.
-$scriptBlock.ToString() | Out-File -FilePath 'C:\IntuneScripts\winrar-update.ps1' -Encoding UTF8 -Force
+    $scriptBlock.ToString() | Out-File -FilePath 'C:\IntuneScripts\winrar-update.ps1' -Encoding UTF8 -Force
 
 # Create a schedule task. The task will execute the PowerShell script "C:\IntuneScripts\winrar-update.ps1" every day at 12AM.
-$trigger = New-ScheduledTaskTrigger -Daily -At 12AM -RandomDelay (New-TimeSpan -Minutes 10)
-$action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument '-NoProfile -ExecutionPolicy ByPass -WindowStyle Hidden -File "C:\IntuneScripts\winrar-update.ps1"'
-$settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -RestartCount 3
-$principal = New-ScheduledTaskPrincipal -UserID "NT AUTHORITY\SYSTEM" -LogonType ServiceAccount -RunLevel Highest
-$splat = @{
-    TaskName = 'WinRAR Update'
-    Trigger = $trigger
-    Action = $action
-    Settings = $settings
-    Principal = $principal
-    TaskPath = '\IntuneTasks\'
-}
-Register-ScheduledTask @splat
+    $trigger = New-ScheduledTaskTrigger -Daily -At 12AM -RandomDelay (New-TimeSpan -Minutes 10)
+    $action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument '-NoProfile -ExecutionPolicy ByPass -WindowStyle Hidden -File "C:\IntuneScripts\winrar-update.ps1"'
+    $settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -RestartCount 3
+    $principal = New-ScheduledTaskPrincipal -UserID "NT AUTHORITY\SYSTEM" -LogonType ServiceAccount -RunLevel Highest
+    $splat = @{
+        TaskName = 'WinRAR Update'
+        Trigger = $trigger
+        Action = $action
+        Settings = $settings
+        Principal = $principal
+        TaskPath = '\IntuneTasks\'
+    }
+    Register-ScheduledTask @splat
