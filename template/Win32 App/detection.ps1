@@ -1,4 +1,4 @@
-if (Get-ScheduledTask -TaskName '7zip Update') {
+if (Get-ScheduledTask -TaskName ' Update') {
     Write-Host "Detected."
     exit 0
 } else {
