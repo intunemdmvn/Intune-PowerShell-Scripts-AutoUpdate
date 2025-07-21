@@ -6,6 +6,26 @@
         {
             "folderPath": "Intune-PowerShell-Scripts-AutoUpdate\\7-Zip-AutoUpdate\\",
             "color": "foldercolorizer.color_00cc00"
+        },
+        {
+            "folderPath": "Intune-PowerShell-Scripts-AutoUpdate\\Firefox-AutoUpdate\\",
+            "color": "foldercolorizer.color_00cc00"
+        },
+        {
+            "folderPath": "Intune-PowerShell-Scripts-AutoUpdate\\WinRAR-AutoUpdate\\",
+            "color": "foldercolorizer.color_00cc00"
+        },
+        {
+            "folderPath": "Intune-PowerShell-Scripts-AutoUpdate\\template\\Platform Script (PowerShell)\\",
+            "color": "foldercolorizer.color_00cccc"
+        },
+        {
+            "folderPath": "Intune-PowerShell-Scripts-AutoUpdate\\template\\Remediation\\",
+            "color": "foldercolorizer.color_cc00ff"
+        },
+        {
+            "folderPath": "Intune-PowerShell-Scripts-AutoUpdate\\template\\Win32 App\\",
+            "color": "foldercolorizer.color_ffcc00"
         }
     ]
 }
