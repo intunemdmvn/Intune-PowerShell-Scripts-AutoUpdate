@@ -25,7 +25,11 @@
         },
         {
             "folderPath": "Intune-PowerShell-Scripts-AutoUpdate\\template\\Win32 App\\",
-            "color": "foldercolorizer.color_ffcc00"
+            "color": "foldercolorizer.color_ccccff"
+        },
+        {
+            "folderPath": "Intune-PowerShell-Scripts-AutoUpdate\\template\\",
+            "color": "foldercolorizer.color_00ffff"
         }
     ]
 }
