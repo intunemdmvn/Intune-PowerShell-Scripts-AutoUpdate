@@ -1,0 +1,11 @@
+{
+    "folder-color.pathColors": [
+        {
+            "folderPath": "Intune-PowerShell-Scripts-AutoUpdate\\.vscode\\"
+        },
+        {
+            "folderPath": "Intune-PowerShell-Scripts-AutoUpdate\\7-Zip-AutoUpdate\\",
+            "color": "foldercolorizer.color_00cc00"
+        }
+    ]
+}
